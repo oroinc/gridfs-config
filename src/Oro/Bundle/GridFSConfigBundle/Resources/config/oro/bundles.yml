@@ -1,0 +1,2 @@
+bundles:
+  - { name: Oro\Bundle\GridFSConfigBundle\OroGridFSConfigBundle, priority: 200 }
