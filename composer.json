@@ -1,0 +1,34 @@
+{
+    "name": "oro/gridfs-config",
+    "description": "GridFS adapter configuration for Gaufrette",
+    "type": "symfony-bundle",
+    "keywords": ["Oro", "OroPlatform", "Mongo", "GridFs"],
+    "homepage": "https://github.com/oroinc/gridfs-config",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {"Oro\\Bundle\\GridFSConfigBundle\\": "src/Oro/Bundle/GridFSConfigBundle"},
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://oroinc.com"
+        }
+    ],
+    "require": {
+        "oro/platform": "4.2.*",
+        "ext-mongodb": "*",
+        "mongodb/mongodb": "^1.1",
+        "knplabs/knp-gaufrette-bundle": "0.5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.7.*"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.2-dev"
+        }
+    }
+}

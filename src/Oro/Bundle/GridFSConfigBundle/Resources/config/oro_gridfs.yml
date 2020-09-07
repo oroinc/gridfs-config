@@ -1,0 +1,4 @@
+knp_gaufrette:
+  # @see https://github.com/KnpLabs/KnpGaufretteBundle/issues/121
+  factories:
+    - "%oro_gridfs.config_dir%/adapter_factories.xml"
