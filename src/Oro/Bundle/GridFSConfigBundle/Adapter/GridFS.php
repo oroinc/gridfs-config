@@ -32,7 +32,7 @@ class GridFS extends BaseGridFS
      */
     public function read($key)
     {
-        return parent::read(ltrim($key, '/'));
+        return parent::read($this->formatKey($key));
     }
 
     /**
@@ -44,12 +44,11 @@ class GridFS extends BaseGridFS
             return 0;
         }
 
-        if ($this->exists($key)) {
-            $this->delete($key);
-        }
+        // remove old file with same filename if one exist
+        $this->delete($key);
 
         $stream = $this->getBucket()->openUploadStream(
-            ltrim($key, '/'),
+            $this->formatKey($key),
             ['contentType' => $this->guessContentType($content)]
         );
 
@@ -60,6 +59,30 @@ class GridFS extends BaseGridFS
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function exists($key)
+    {
+        return parent::exists($this->formatKey($key));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function delete($key)
+    {
+        return parent::delete($this->formatKey($key));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function rename($sourceKey, $targetKey)
+    {
+        return parent::rename($this->formatKey($sourceKey), $this->formatKey($targetKey));
     }
 
     /**
@@ -80,5 +103,15 @@ class GridFS extends BaseGridFS
         $fileInfo = new \finfo(FILEINFO_MIME_TYPE);
 
         return $fileInfo->buffer($content);
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
+    private function formatKey(string $key): string
+    {
+        return ltrim($key, '/');
     }
 }

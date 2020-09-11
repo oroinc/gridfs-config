@@ -33,32 +33,32 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
     public function testWriteOnExistingKey()
     {
         $this->mongoDBBucketMock
-            ->expects(self::any())
+            ->expects(self::once())
             ->method('findOne')
-            ->with(['filename' => 'test'])
-            ->willReturn(['_id' => 'test', 'data' => 'some data']);
+            ->with(['filename' => 'test.txt'])
+            ->willReturn(['_id' => '5f57c695ac49b642ae71f12c', 'data' => 'some data', 'filename' => 'test.txt']);
 
         $this->mongoDBBucketMock
             ->expects(self::once())
             ->method('delete')
-            ->with('test');
+            ->with('5f57c695ac49b642ae71f12c');
 
         $this->mongoDBBucketMock
             ->expects(self::once())
             ->method('openUploadStream')
             ->with(
-                'test',
+                'test.txt',
                 ['contentType' => 'text/plain']
             )
             ->willReturn(fopen('php://temp', 'w+b'));
 
-        self::assertEquals(17, $this->gridFSAdapter->write('test', 'not empty content'));
+        self::assertEquals(17, $this->gridFSAdapter->write('/test.txt', 'not empty content'));
     }
 
     public function testWriteOnNonExistingKey()
     {
         $this->mongoDBBucketMock
-            ->expects(self::any())
+            ->expects(self::once())
             ->method('findOne')
             ->willReturn(null);
 
@@ -96,6 +96,72 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
             ->willReturn(fopen('php://temp', 'r'));
 
         self::assertFalse($this->gridFSAdapter->write('test', 'not empty content'));
+    }
+
+    public function testRead()
+    {
+        $this->mongoDBBucketMock
+            ->expects(self::once())
+            ->method('openDownloadStreamByName')
+            ->with('test.txt')
+            ->willReturn(fopen(__DIR__ . '/test.txt', 'r'));
+
+        $expectedContent = "some text\n";
+
+        self::assertEquals($expectedContent, $this->gridFSAdapter->read('/test.txt'));
+    }
+
+    public function testExistsWithExistFile()
+    {
+        $this->mongoDBBucketMock
+            ->expects(self::once())
+            ->method('findOne')
+            ->with(['filename' => 'test.txt'])
+            ->willReturn(['_id' => '5f57c695ac49b642ae71f12c', 'data' => 'some data', 'filename' => 'test.txt']);
+
+        self::assertTrue($this->gridFSAdapter->exists('/test.txt'));
+    }
+
+    public function testExistsWithNonExistFile()
+    {
+        $this->mongoDBBucketMock
+            ->expects(self::once())
+            ->method('findOne')
+            ->with(['filename' => 'test.txt'])
+            ->willReturn(null);
+
+        self::assertFalse($this->gridFSAdapter->exists('/test.txt'));
+    }
+
+    public function testDeleteOnExistingFile()
+    {
+        $this->mongoDBBucketMock
+            ->expects(self::once())
+            ->method('findOne')
+            ->with(['filename' => 'test.txt'])
+            ->willReturn(['_id' => '5f57c695ac49b642ae71f12c', 'data' => 'some data', 'filename' => 'test.txt']);
+
+        $this->mongoDBBucketMock
+            ->expects(self::once())
+            ->method('delete')
+            ->with('5f57c695ac49b642ae71f12c');
+
+        self::assertTrue($this->gridFSAdapter->delete('/test.txt'));
+    }
+
+    public function testDeleteOnNonExistingFile()
+    {
+        $this->mongoDBBucketMock
+            ->expects(self::once())
+            ->method('findOne')
+            ->with(['filename' => 'test.txt'])
+            ->willReturn(null);
+
+        $this->mongoDBBucketMock
+            ->expects(self::never())
+            ->method('delete');
+
+        self::assertFalse($this->gridFSAdapter->delete('/test.txt'));
     }
 
     public function testGetBucket()
