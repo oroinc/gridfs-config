@@ -1,0 +1,13 @@
+services:
+  oro_gridfs.adapter.gridfs:
+    parent: knp_gaufrette.adapter.gridfs
+    class: Oro\Bundle\GridFSConfigBundle\Adapter\GridFS
+    abstract: true
+
+  oro.mongodb.driver.manager:
+    class: MongoDB\Driver\Manager
+    abstract: true
+
+  oro.gridfs.bucket:
+    class: Oro\Bundle\GridFSConfigBundle\GridFS\Bucket
+    abstract: true
