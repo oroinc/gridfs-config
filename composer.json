@@ -2,7 +2,7 @@
     "name": "oro/gridfs-config",
     "description": "GridFS adapter configuration for Gaufrette",
     "type": "symfony-bundle",
-    "keywords": ["Oro", "OroPlatform", "Mongo", "GridFs"],
+    "keywords": ["Oro", "OroPlatform", "Mongo", "MongoDB", "GridFS"],
     "homepage": "https://github.com/oroinc/gridfs-config",
     "license": "MIT",
     "autoload": {

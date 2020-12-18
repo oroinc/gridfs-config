@@ -6,13 +6,14 @@ use Knp\Bundle\GaufretteBundle\DependencyInjection\Factory\AdapterFactoryInterfa
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Factory for create GridFs Adapter
+ * A factory to create Gaufrette adapter for MongoDB GridFS storage.
  */
 class GridFSAdapterFactory implements AdapterFactoryInterface
 {
-    public const DSN_STRING_PARAMETER = 'mongodb_gridfs_dsn';
+    private const DSN_STRING_PARAMETER = 'mongodb_gridfs_dsn';
 
     /**
      * {@inheritdoc}
@@ -22,17 +23,19 @@ class GridFSAdapterFactory implements AdapterFactoryInterface
         $dbConfig = $config[self::DSN_STRING_PARAMETER];
         preg_match('|mongodb:\/\/.*\/(?<db>\w+)$|', $dbConfig, $matches);
 
+        $driverManagerId = 'oro.mongodb.driver.manager.' . $id;
         $driverManagerDefinition = new ChildDefinition('oro.mongodb.driver.manager');
         $driverManagerDefinition->addArgument($dbConfig);
-        $container->setDefinition('oro.mongodb.driver.manager.' . $id, $driverManagerDefinition);
+        $container->setDefinition($driverManagerId, $driverManagerDefinition);
 
+        $bucketId = 'oro.gridfs.bucket.' . $id;
         $bucketDefinition = new ChildDefinition('oro.gridfs.bucket');
-        $bucketDefinition->addArgument($driverManagerDefinition);
+        $bucketDefinition->addArgument(new Reference($driverManagerId));
         $bucketDefinition->addArgument($matches['db']);
-        $container->setDefinition('oro.gridfs.bucket.' . $id, $bucketDefinition);
+        $container->setDefinition($bucketId, $bucketDefinition);
 
         $adapterDefinition = new ChildDefinition('oro_gridfs.adapter.gridfs');
-        $adapterDefinition->addArgument($bucketDefinition);
+        $adapterDefinition->addArgument(new Reference($bucketId));
         $container->setDefinition($id, $adapterDefinition);
     }
 
