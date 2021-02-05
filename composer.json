@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "oro/platform": "4.2.*",
+        "oro/platform": "5.0.*",
         "ext-mongodb": "*",
         "mongodb/mongodb": "^1.1",
         "knplabs/knp-gaufrette-bundle": "~0.7.1"
@@ -28,7 +28,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "4.2-dev"
+            "dev-master": "5.0-dev"
         }
     }
 }
