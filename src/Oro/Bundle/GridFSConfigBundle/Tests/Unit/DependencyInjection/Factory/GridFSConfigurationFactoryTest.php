@@ -37,8 +37,8 @@ class GridFSConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
         self::assertEquals(
             'The configuration string is "gridfs:{MongoDB connection string}",'
             . ' for example "gridfs:mongodb://127.0.0.1:27017/media".'
-            . ' For more detail see https://doc.oroinc.com/backend/bundles/platform/GridFSConfigBundle/'
-            . '#adapters-configuration-with-parameters-yml',
+            . ' For more detail see https://doc.oroinc.com/backend/architecture/tech-stack/file-storage'
+            . '#file-system-adapters-configuration-with-parameters-yml',
             $this->factory->getHint()
         );
     }
