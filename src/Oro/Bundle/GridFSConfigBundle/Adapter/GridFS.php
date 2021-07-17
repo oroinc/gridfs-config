@@ -18,9 +18,6 @@ class GridFS extends BaseGridFS
     /** @var Bucket */
     private $bucket;
 
-    /**
-     * @param Bucket $bucket
-     */
     public function __construct(Bucket $bucket)
     {
         parent::__construct($bucket);
@@ -85,19 +82,11 @@ class GridFS extends BaseGridFS
         return parent::rename($this->formatKey($sourceKey), $this->formatKey($targetKey));
     }
 
-    /**
-     * @return Bucket
-     */
     public function getBucket(): Bucket
     {
         return $this->bucket;
     }
 
-    /**
-     * @param string $content
-     *
-     * @return string
-     */
     protected function guessContentType(string $content): string
     {
         $fileInfo = new \finfo(FILEINFO_MIME_TYPE);
@@ -105,11 +94,6 @@ class GridFS extends BaseGridFS
         return $fileInfo->buffer($content);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return string
-     */
     private function formatKey(string $key): string
     {
         return ltrim($key, '/');
