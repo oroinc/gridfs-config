@@ -91,7 +91,15 @@ class GridFS extends BaseGridFS
     {
         $fileInfo = new \finfo(FILEINFO_MIME_TYPE);
 
-        return $fileInfo->buffer($content);
+        /**
+         * According to:
+         *  - https://en.wikipedia.org/wiki/File_signature
+         *  - https://en.wikipedia.org/wiki/List_of_file_signatures
+         *  - https://www.garykessler.net/library/file_sigs.html
+         *
+         * The first 1024 bytes of file should be enough for MimeType detection
+         */
+        return $fileInfo->buffer(substr($content, 0, 1024));
     }
 
     private function formatKey(string $key): string

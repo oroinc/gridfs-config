@@ -6,6 +6,9 @@ use Oro\Bundle\GridFSConfigBundle\Adapter\GridFS;
 use Oro\Bundle\GridFSConfigBundle\GridFS\Bucket;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class GridFSTest extends \PHPUnit\Framework\TestCase
 {
     /** @var GridFS */
@@ -104,7 +107,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
             ->expects(self::once())
             ->method('openDownloadStreamByName')
             ->with('test.txt')
-            ->willReturn(fopen(__DIR__ . '/test.txt', 'r'));
+            ->willReturn(fopen(__DIR__ . '/Fixtures/test.txt', 'r'));
 
         $expectedContent = "some text\n";
 
@@ -167,5 +170,42 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
     public function testGetBucket()
     {
         self::assertEquals($this->mongoDBBucketMock, $this->gridFSAdapter->getBucket());
+    }
+
+    /**
+     * @dataProvider fileContentProvider
+     */
+    public function testGuessContentType($content, $expectedMimeType)
+    {
+        $this->mongoDBBucketMock->expects(self::once())
+            ->method('findOne')
+            ->willReturn(null);
+        $this->mongoDBBucketMock->expects(self::once())
+            ->method('openUploadStream')
+            ->with('test', ['contentType' => $expectedMimeType])
+            ->willReturn(fopen('php://temp', 'r'));
+
+        $this->gridFSAdapter->write('test', $content);
+    }
+
+    public function fileContentProvider(): array
+    {
+        return [
+            [file_get_contents(__DIR__ . '/Fixtures/test.gif'), 'image/gif'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.ico'), 'image/vnd.microsoft.icon'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.jpeg'), 'image/jpeg'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.jpg'), 'image/jpeg'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.jxr'), 'image/jxr'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.pdf'), 'application/pdf'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.png'), 'image/png'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.rtf'), 'text/rtf'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.svg'), 'image/svg+xml'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.tga'), 'image/x-tga'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.ttf'), 'font/sfnt'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.txt'), 'text/plain'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.webp'), 'image/webp'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.xml'), 'text/plain'],
+            [file_get_contents(__DIR__ . '/Fixtures/test.mp4'), 'video/mp4'],
+        ];
     }
 }
