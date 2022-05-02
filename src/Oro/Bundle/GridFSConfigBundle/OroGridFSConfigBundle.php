@@ -7,15 +7,12 @@ use Oro\Bundle\GridFSConfigBundle\DependencyInjection\Factory\GridFSConfiguratio
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * The GridFSConfigBundle bundle class.
- */
 class OroGridFSConfigBundle extends Bundle
 {
     /**
      * {@inheritDoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
