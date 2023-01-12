@@ -11,18 +11,19 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class OroGridFSConfigExtension extends Extension implements PrependExtensionInterface
 {
     /**
-     * @{inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('commands.yml');
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritDoc}
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         // register oro_gridfs gaufrette adapter
         $container->setParameter('oro_gridfs.config_dir', __DIR__.'/../Resources/config');
