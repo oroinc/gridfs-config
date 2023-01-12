@@ -1,0 +1,16 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\GridFSConfigBundle\Command\GridFSCleanupAttachmentFilesCommand:
+        arguments:
+            - '%oro_attachment.collect_attachment_files_batch_size%'
+            - '%oro_attachment.load_attachments_batch_size%'
+            - '%oro_attachment.load_existing_attachments_batch_size%'
+            - '@oro_attachment.file_manager.cleanup_data'
+            - '@doctrine'
+            - '@oro_attachment.file_manager'
+            - '@knp_gaufrette.filesystem_map'
+            - 'attachments'
+        tags:
+            - { name: console.command }
