@@ -18,7 +18,7 @@ class GridFSAdapterFactory implements AdapterFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(ContainerBuilder $container, $id, array $config)
+    public function create(ContainerBuilder $container, $id, array $config): void
     {
         $dbConfig = $config[self::DSN_STRING_PARAMETER];
         preg_match('|mongodb:\/\/.*\/(?<db>\w+)$|', $dbConfig, $matches);
@@ -42,7 +42,7 @@ class GridFSAdapterFactory implements AdapterFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getKey()
+    public function getKey(): string
     {
         return 'oro_gridfs';
     }
@@ -50,11 +50,11 @@ class GridFSAdapterFactory implements AdapterFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function addConfiguration(NodeDefinition $node)
+    public function addConfiguration(NodeDefinition $node): void
     {
         $node
             ->children()
-                ->scalarNode(self::DSN_STRING_PARAMETER)->isRequired()->cannotBeEmpty()->end()
+            ->scalarNode(self::DSN_STRING_PARAMETER)->isRequired()->cannotBeEmpty()->end()
             ->end();
     }
 }
