@@ -4,6 +4,10 @@ services:
     class: Oro\Bundle\GridFSConfigBundle\Adapter\GridFS
     abstract: true
 
+  oro.mongodb.driver.config:
+    class: Oro\Bundle\GridFSConfigBundle\Provider\MongoDbDriverConfig
+    abstract: true
+
   oro.mongodb.driver.manager:
     class: MongoDB\Driver\Manager
     abstract: true

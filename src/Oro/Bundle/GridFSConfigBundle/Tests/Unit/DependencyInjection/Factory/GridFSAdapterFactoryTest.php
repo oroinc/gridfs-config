@@ -2,10 +2,15 @@
 
 namespace Oro\Bundle\GridFSConfigBundle\Tests\Unit\DependencyInjection\Factory;
 
+use MongoDB\Driver\Manager;
+use Oro\Bundle\GridFSConfigBundle\Adapter\GridFS;
 use Oro\Bundle\GridFSConfigBundle\DependencyInjection\Factory\GridFSAdapterFactory;
+use Oro\Bundle\GridFSConfigBundle\GridFS\Bucket;
+use Oro\Bundle\GridFSConfigBundle\Provider\MongoDbDriverConfig;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 class GridFSAdapterFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -32,9 +37,32 @@ class GridFSAdapterFactoryTest extends \PHPUnit\Framework\TestCase
         self::assertInstanceOf(ScalarNodeDefinition::class, $childDefinitions['mongodb_gridfs_dsn']);
     }
 
-    public function testCreate()
+    private function createContainer(): ContainerBuilder
     {
         $container = new ContainerBuilder();
+
+        $baseDriverConfig = new Definition(MongoDbDriverConfig::class);
+        $baseDriverConfig->setAbstract(true);
+        $container->setDefinition('oro.mongodb.driver.config', $baseDriverConfig);
+
+        $baseDriverManager = new Definition(Manager::class);
+        $baseDriverManager->setAbstract(true);
+        $container->setDefinition('oro.mongodb.driver.manager', $baseDriverManager);
+
+        $baseGridFsBucket = new Definition(Bucket::class);
+        $baseGridFsBucket->setAbstract(true);
+        $container->setDefinition('oro.gridfs.bucket', $baseGridFsBucket);
+
+        $baseGridFsAdapter = new Definition(GridFS::class);
+        $baseGridFsAdapter->setAbstract(true);
+        $container->setDefinition('oro_gridfs.adapter.gridfs', $baseGridFsAdapter);
+
+        return $container;
+    }
+
+    public function testCreate()
+    {
+        $container = $this->createContainer();
         $id = 'test_gridfs.adapter';
         $config = ['mongodb_gridfs_dsn' => 'mongodb://user:password@host:27017/attachment'];
 
@@ -45,15 +73,21 @@ class GridFSAdapterFactoryTest extends \PHPUnit\Framework\TestCase
         self::assertTrue($container->hasDefinition('test_gridfs.adapter'));
 
         $bucketConfig = $container->getDefinition('oro.mongodb.driver.manager.test_gridfs.adapter');
-        self::assertEquals('mongodb://user:password@host:27017/attachment', $bucketConfig->getArgument(0));
+        self::assertEquals(
+            "service('oro.mongodb.driver.config.test_gridfs.adapter').getDbConfig()",
+            (string) $bucketConfig->getArgument(0)
+        );
 
         $bucketConfig = $container->getDefinition('oro.gridfs.bucket.test_gridfs.adapter');
-        self::assertEquals('attachment', $bucketConfig->getArgument(1));
+        self::assertEquals(
+            "service('oro.mongodb.driver.config.test_gridfs.adapter').getDbName()",
+            (string) $bucketConfig->getArgument(1)
+        );
     }
 
     public function testCreateWithClusterConfiguration()
     {
-        $container = new ContainerBuilder();
+        $container = $this->createContainer();
         $id = 'test_gridfs.adapter';
         $config = ['mongodb_gridfs_dsn' => 'mongodb://user:password@host1:27017,host2:27017/cache'];
 
@@ -64,9 +98,15 @@ class GridFSAdapterFactoryTest extends \PHPUnit\Framework\TestCase
         self::assertTrue($container->hasDefinition('test_gridfs.adapter'));
 
         $bucketConfig = $container->getDefinition('oro.mongodb.driver.manager.test_gridfs.adapter');
-        self::assertEquals('mongodb://user:password@host1:27017,host2:27017/cache', $bucketConfig->getArgument(0));
+        self::assertEquals(
+            "service('oro.mongodb.driver.config.test_gridfs.adapter').getDbConfig()",
+            (string) $bucketConfig->getArgument(0)
+        );
 
         $bucketConfig = $container->getDefinition('oro.gridfs.bucket.test_gridfs.adapter');
-        self::assertEquals('cache', $bucketConfig->getArgument(1));
+        self::assertEquals(
+            "service('oro.mongodb.driver.config.test_gridfs.adapter').getDbName()",
+            (string) $bucketConfig->getArgument(1)
+        );
     }
 }
