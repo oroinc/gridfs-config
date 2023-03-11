@@ -2,29 +2,40 @@
 
 namespace Oro\Bundle\GridFSConfigBundle\Tests\Unit\DependencyInjection;
 
+use Knp\Bundle\GaufretteBundle\DependencyInjection\KnpGaufretteExtension;
 use Oro\Bundle\GridFSConfigBundle\DependencyInjection\OroGridFSConfigExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class OroGridFSConfigExtensionTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var ContainerBuilder */
-    private $container;
-
-    /** @var OroGridFSConfigExtension */
-    private $extension;
-
-    protected function setUp(): void
+    public function testLoad(): void
     {
-        $this->container = new ContainerBuilder();
-        $this->extension = new OroGridFSConfigExtension();
+        $container = new ContainerBuilder();
+
+        $extension = new OroGridFSConfigExtension();
+        $extension->load([], $container);
+
+        self::assertNotEmpty($container->getDefinitions());
     }
 
-    public function testLoad()
+    public function testPrepend(): void
     {
-        $this->extension->load([], $this->container);
+        $container = new ContainerBuilder();
+        $container->registerExtension(new KnpGaufretteExtension());
 
-        self::assertTrue($this->container->has('oro_gridfs.adapter.gridfs'));
-        self::assertTrue($this->container->has('oro.mongodb.driver.manager'));
-        self::assertTrue($this->container->has('oro.gridfs.bucket'));
+        $extension = new OroGridFSConfigExtension();
+        $extension->prepend($container);
+
+        self::assertEquals(
+            dirname((new \ReflectionClass(OroGridFSConfigExtension::class))->getFileName())
+            . '/../Resources/config',
+            $container->getParameter('oro_gridfs.config_dir')
+        );
+        self::assertEquals(
+            [
+                ['factories' => ['%oro_gridfs.config_dir%/adapter_factories.xml']]
+            ],
+            $container->getExtensionConfig('knp_gaufrette')
+        );
     }
 }
