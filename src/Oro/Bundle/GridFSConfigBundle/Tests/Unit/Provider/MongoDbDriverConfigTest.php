@@ -17,7 +17,7 @@ class MongoDbDriverConfigTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($dbName, $config->getDbName());
     }
 
-    public function dataProvider()
+    public function dataProvider(): array
     {
         return [
             'dsn no claster' => [
