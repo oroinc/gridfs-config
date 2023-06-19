@@ -146,7 +146,7 @@ class CollectionWrapper
     public function findFileByFilenameAndRevision($filename, $revision)
     {
         $filename = (string)$filename;
-        $revision = (integer)$revision;
+        $revision = (int)$revision;
 
         if ($revision < 0) {
             $skip = abs($revision) - 1;
