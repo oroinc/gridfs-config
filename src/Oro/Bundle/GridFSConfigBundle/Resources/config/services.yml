@@ -15,3 +15,15 @@ services:
   oro.gridfs.bucket:
     class: Oro\Bundle\GridFSConfigBundle\GridFS\Bucket
     abstract: true
+
+  oro.mongodb.requirements_provider:
+    class: Oro\Bundle\GridFSConfigBundle\Provider\MongoDbRequirementsProvider
+    arguments:
+      - '%kernel.project_dir%'
+      - '@?oro.mongodb.driver.config.gaufrette.public_adapter'
+      - '@logger'
+    tags:
+      - { name: oro.requirements_provider }
+
+  # Override the requirements provider
+  oro_installer.public_media_directory_requirements_provider: '@oro.mongodb.requirements_provider'
