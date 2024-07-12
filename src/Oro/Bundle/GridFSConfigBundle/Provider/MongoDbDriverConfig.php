@@ -2,6 +2,11 @@
 
 namespace Oro\Bundle\GridFSConfigBundle\Provider;
 
+use MongoDB\Client;
+use MongoDB\Driver\Exception\RuntimeException;
+use MongoDB\Exception\InvalidArgumentException;
+use Psr\Log\LoggerInterface;
+
 /**
  * Mongo DB driver config provider.
  */
@@ -26,5 +31,27 @@ class MongoDbDriverConfig
     public function getDbName(): string
     {
         return $this->dbName;
+    }
+
+    public function isConnected(LoggerInterface $logger = null): bool
+    {
+        $mongoDbConfig = $this->getDbConfig();
+        $mongoDbName = $this->getDbName();
+
+        try {
+            $client = new Client($mongoDbConfig);
+            $client->selectDatabase($mongoDbName)->command(['ping' => 1]);
+        } catch (InvalidArgumentException|RuntimeException $e) {
+            if ($logger) {
+                $logger->warning(
+                    sprintf('MongoDB ping failed.'),
+                    ['exception' => $e]
+                );
+            }
+
+            return false;
+        }
+
+        return true;
     }
 }
