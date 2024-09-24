@@ -9,9 +9,7 @@ use Oro\Bundle\GaufretteBundle\DependencyInjection\Factory\ConfigurationFactoryI
  */
 class GridFSConfigurationFactory implements ConfigurationFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getAdapterConfiguration(string $configString): array
     {
         return [
@@ -21,17 +19,13 @@ class GridFSConfigurationFactory implements ConfigurationFactoryInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getKey(): string
     {
         return 'gridfs';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getHint(): string
     {
         return

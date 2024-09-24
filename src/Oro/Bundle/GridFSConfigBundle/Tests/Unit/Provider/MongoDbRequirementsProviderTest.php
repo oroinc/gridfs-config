@@ -12,6 +12,7 @@ class MongoDbRequirementsProviderTest extends \PHPUnit\Framework\TestCase
     private string $mediaDirectory;
     private MongoDbRequirementsProvider $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $projectDirectory = sys_get_temp_dir();
@@ -30,6 +31,7 @@ class MongoDbRequirementsProviderTest extends \PHPUnit\Framework\TestCase
         mkdir($this->tempDir, 0777, true);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         chmod($this->tempDir, 0777);

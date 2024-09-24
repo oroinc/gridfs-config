@@ -41,26 +41,20 @@ class GridFSCleanupAttachmentFilesCommand extends CleanupAttachmentFilesCommand
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function isEnabled(): bool
     {
         return $this->getGridFSAdapter() !== null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     protected function configure(): void
     {
         parent::configure();
         $this->setDescription('Deletes lost attachment files stored in GridFS.');
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     protected function getAttachmentFileNames(): iterable
     {
         $cursor = $this->getGridFSAdapter()->getBucket()->find(

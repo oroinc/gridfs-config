@@ -16,6 +16,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
     /** @var GridFS */
     private $gridFSAdapter;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->mongoDBBucket = $this->createMock(Bucket::class);

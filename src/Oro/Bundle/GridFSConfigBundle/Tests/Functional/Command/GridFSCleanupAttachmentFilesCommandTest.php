@@ -19,6 +19,7 @@ class GridFSCleanupAttachmentFilesCommandTest extends WebTestCase
 
     private bool $lostAttachmentFilesRemoved = false;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->initClient();

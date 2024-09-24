@@ -24,17 +24,13 @@ class GridFS extends BaseGridFS
         $this->bucket = $bucket;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function read($key)
     {
         return parent::read($this->formatKey($key));
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function write($key, $content)
     {
         if (empty($content)) {
@@ -58,25 +54,19 @@ class GridFS extends BaseGridFS
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function exists($key)
     {
         return parent::exists($this->formatKey($key));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function delete($key)
     {
         return parent::delete($this->formatKey($key));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function rename($sourceKey, $targetKey)
     {
         return parent::rename($this->formatKey($sourceKey), $this->formatKey($targetKey));

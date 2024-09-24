@@ -9,6 +9,7 @@ class GridFSConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
     /** @var GridFSConfigurationFactory */
     private $factory;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->factory = new GridFSConfigurationFactory();

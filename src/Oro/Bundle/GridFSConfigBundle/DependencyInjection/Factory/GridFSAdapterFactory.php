@@ -16,9 +16,7 @@ class GridFSAdapterFactory implements AdapterFactoryInterface
 {
     private const DSN_STRING_PARAMETER = 'mongodb_gridfs_dsn';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function create(ContainerBuilder $container, $id, array $config): void
     {
         $dbConfig = $config[self::DSN_STRING_PARAMETER];
@@ -48,17 +46,13 @@ class GridFSAdapterFactory implements AdapterFactoryInterface
         $container->setDefinition($id, $adapterDefinition);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getKey(): string
     {
         return 'oro_gridfs';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function addConfiguration(NodeDefinition $node): void
     {
         $node

@@ -17,6 +17,7 @@ class GridFSAdapterFactoryTest extends \PHPUnit\Framework\TestCase
     /** @var GridFSAdapterFactory */
     private $factory;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->factory = new GridFSAdapterFactory();
