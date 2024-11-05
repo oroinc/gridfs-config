@@ -5,16 +5,16 @@
     "keywords": ["Oro", "OroPlatform", "Mongo", "MongoDB", "GridFS"],
     "homepage": "https://github.com/oroinc/gridfs-config",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "https://oroinc.com/"
+        }
+    ],
     "autoload": {
         "psr-4": {"Oro\\Bundle\\GridFSConfigBundle\\": "src/Oro/Bundle/GridFSConfigBundle"},
         "exclude-from-classmap": ["/Tests/"]
     },
-    "authors": [
-        {
-            "name": "Oro, Inc",
-            "homepage": "http://oroinc.com"
-        }
-    ],
     "require": {
         "oro/platform": "6.1.*",
         "mongodb/mongodb": "1.15.*",
