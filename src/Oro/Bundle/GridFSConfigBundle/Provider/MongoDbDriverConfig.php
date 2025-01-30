@@ -33,7 +33,7 @@ class MongoDbDriverConfig
         return $this->dbName;
     }
 
-    public function isConnected(LoggerInterface $logger = null): bool
+    public function isConnected(?LoggerInterface $logger = null): bool
     {
         $mongoDbConfig = $this->getDbConfig();
         $mongoDbName = $this->getDbName();
