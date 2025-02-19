@@ -7,7 +7,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {"Oro\\Bundle\\GridFSConfigBundle\\": "src/Oro/Bundle/GridFSConfigBundle"},
-        "exclude-from-classmap": ["/Tests/"]
+        "exclude-from-classmap": ["**/Tests/"]
     },
     "authors": [
         {
