@@ -7,15 +7,15 @@ use Oro\Bundle\GridFSConfigBundle\Adapter\GridFS;
 use Oro\Bundle\GridFSConfigBundle\DependencyInjection\Factory\GridFSAdapterFactory;
 use Oro\Bundle\GridFSConfigBundle\GridFS\Bucket;
 use Oro\Bundle\GridFSConfigBundle\Provider\MongoDbDriverConfig;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class GridFSAdapterFactoryTest extends \PHPUnit\Framework\TestCase
+class GridFSAdapterFactoryTest extends TestCase
 {
-    /** @var GridFSAdapterFactory */
-    private $factory;
+    private GridFSAdapterFactory $factory;
 
     #[\Override]
     protected function setUp(): void
@@ -23,12 +23,12 @@ class GridFSAdapterFactoryTest extends \PHPUnit\Framework\TestCase
         $this->factory = new GridFSAdapterFactory();
     }
 
-    public function testGetKey()
+    public function testGetKey(): void
     {
         self::assertEquals('oro_gridfs', $this->factory->getKey());
     }
 
-    public function testAddConfiguration()
+    public function testAddConfiguration(): void
     {
         $node = new ArrayNodeDefinition('test');
         $this->factory->addConfiguration($node);
@@ -61,7 +61,7 @@ class GridFSAdapterFactoryTest extends \PHPUnit\Framework\TestCase
         return $container;
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $container = $this->createContainer();
         $id = 'test_gridfs.adapter';
@@ -86,7 +86,7 @@ class GridFSAdapterFactoryTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testCreateWithClusterConfiguration()
+    public function testCreateWithClusterConfiguration(): void
     {
         $container = $this->createContainer();
         $id = 'test_gridfs.adapter';

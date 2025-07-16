@@ -4,17 +4,16 @@ namespace Oro\Bundle\GridFSConfigBundle\Tests\Unit\Adapter;
 
 use Oro\Bundle\GridFSConfigBundle\Adapter\GridFS;
 use Oro\Bundle\GridFSConfigBundle\GridFS\Bucket;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
-class GridFSTest extends \PHPUnit\Framework\TestCase
+class GridFSTest extends TestCase
 {
-    /** @var Bucket|\PHPUnit\Framework\MockObject\MockObject */
-    private $mongoDBBucket;
-
-    /** @var GridFS */
-    private $gridFSAdapter;
+    private Bucket&MockObject $mongoDBBucket;
+    private GridFS $gridFSAdapter;
 
     #[\Override]
     protected function setUp(): void
@@ -24,7 +23,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
         $this->gridFSAdapter = new GridFS($this->mongoDBBucket);
     }
 
-    public function testWriteParentNotCalledWithEmptyContent()
+    public function testWriteParentNotCalledWithEmptyContent(): void
     {
         $this->mongoDBBucket->expects(self::never())
             ->method('openUploadStream');
@@ -32,7 +31,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
         $this->gridFSAdapter->write('test', '');
     }
 
-    public function testWriteOnExistingKey()
+    public function testWriteOnExistingKey(): void
     {
         $this->mongoDBBucket->expects(self::once())
             ->method('findOne')
@@ -54,7 +53,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
         self::assertEquals(17, $this->gridFSAdapter->write('/test.txt', 'not empty content'));
     }
 
-    public function testWriteOnNonExistingKey()
+    public function testWriteOnNonExistingKey(): void
     {
         $this->mongoDBBucket->expects(self::once())
             ->method('findOne')
@@ -74,7 +73,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
         self::assertEquals(17, $this->gridFSAdapter->write('test', 'not empty content'));
     }
 
-    public function testTryToWriteOnExceptionDuringWrite()
+    public function testTryToWriteOnExceptionDuringWrite(): void
     {
         $this->mongoDBBucket->expects(self::any())
             ->method('findOne')
@@ -92,7 +91,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
         self::assertFalse($this->gridFSAdapter->write('test', 'not empty content'));
     }
 
-    public function testRead()
+    public function testRead(): void
     {
         $this->mongoDBBucket->expects(self::once())
             ->method('openDownloadStreamByName')
@@ -104,7 +103,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
         self::assertEquals($expectedContent, $this->gridFSAdapter->read('/test.txt'));
     }
 
-    public function testExistsWithExistFile()
+    public function testExistsWithExistFile(): void
     {
         $this->mongoDBBucket->expects(self::once())
             ->method('findOne')
@@ -114,7 +113,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
         self::assertTrue($this->gridFSAdapter->exists('/test.txt'));
     }
 
-    public function testExistsWithNonExistFile()
+    public function testExistsWithNonExistFile(): void
     {
         $this->mongoDBBucket->expects(self::once())
             ->method('findOne')
@@ -124,7 +123,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
         self::assertFalse($this->gridFSAdapter->exists('/test.txt'));
     }
 
-    public function testDeleteOnExistingFile()
+    public function testDeleteOnExistingFile(): void
     {
         $this->mongoDBBucket->expects(self::once())
             ->method('findOne')
@@ -138,7 +137,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
         self::assertTrue($this->gridFSAdapter->delete('/test.txt'));
     }
 
-    public function testDeleteOnNonExistingFile()
+    public function testDeleteOnNonExistingFile(): void
     {
         $this->mongoDBBucket->expects(self::once())
             ->method('findOne')
@@ -151,7 +150,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
         self::assertFalse($this->gridFSAdapter->delete('/test.txt'));
     }
 
-    public function testGetBucket()
+    public function testGetBucket(): void
     {
         self::assertEquals($this->mongoDBBucket, $this->gridFSAdapter->getBucket());
     }
@@ -159,7 +158,7 @@ class GridFSTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider fileContentProvider
      */
-    public function testGuessContentType($content, $expectedMimeType)
+    public function testGuessContentType($content, $expectedMimeType): void
     {
         $this->mongoDBBucket->expects(self::once())
             ->method('findOne')

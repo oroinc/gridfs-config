@@ -4,10 +4,11 @@ namespace Oro\Bundle\GridFSConfigBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\GridFSConfigBundle\Provider\MongoDbDriverConfig;
 use Oro\Bundle\GridFSConfigBundle\Provider\MongoDbRequirementsProvider;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Requirements\RequirementCollection;
 
-class MongoDbRequirementsProviderTest extends \PHPUnit\Framework\TestCase
+class MongoDbRequirementsProviderTest extends TestCase
 {
     private string $mediaDirectory;
     private MongoDbRequirementsProvider $provider;

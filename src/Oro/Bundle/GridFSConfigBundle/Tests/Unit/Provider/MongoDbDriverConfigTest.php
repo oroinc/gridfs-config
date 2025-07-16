@@ -3,13 +3,14 @@
 namespace Oro\Bundle\GridFSConfigBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\GridFSConfigBundle\Provider\MongoDbDriverConfig;
+use PHPUnit\Framework\TestCase;
 
-class MongoDbDriverConfigTest extends \PHPUnit\Framework\TestCase
+class MongoDbDriverConfigTest extends TestCase
 {
     /**
      * @dataProvider dataProvider
      */
-    public function testCreate(string $dbConfig, string $dbName)
+    public function testCreate(string $dbConfig, string $dbName): void
     {
         $config = new MongoDbDriverConfig($dbConfig);
 

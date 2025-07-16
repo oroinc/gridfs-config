@@ -3,11 +3,11 @@
 namespace Oro\Bundle\GridFSConfigBundle\Tests\Unit\DependencyInjection\Factory;
 
 use Oro\Bundle\GridFSConfigBundle\DependencyInjection\Factory\GridFSConfigurationFactory;
+use PHPUnit\Framework\TestCase;
 
-class GridFSConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
+class GridFSConfigurationFactoryTest extends TestCase
 {
-    /** @var GridFSConfigurationFactory */
-    private $factory;
+    private GridFSConfigurationFactory $factory;
 
     #[\Override]
     protected function setUp(): void
@@ -15,7 +15,7 @@ class GridFSConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
         $this->factory = new GridFSConfigurationFactory();
     }
 
-    public function testGetAdapterConfiguration()
+    public function testGetAdapterConfiguration(): void
     {
         $configString = 'mongodb:127.0.0.1/test';
         self::assertEquals(
@@ -28,12 +28,12 @@ class GridFSConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetKey()
+    public function testGetKey(): void
     {
         self::assertEquals('gridfs', $this->factory->getKey());
     }
 
-    public function testGetHint()
+    public function testGetHint(): void
     {
         self::assertEquals(
             'The configuration string is "gridfs:{MongoDB connection string}",'

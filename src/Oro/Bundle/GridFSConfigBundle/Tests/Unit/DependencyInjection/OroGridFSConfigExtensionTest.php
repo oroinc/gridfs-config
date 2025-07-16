@@ -4,9 +4,10 @@ namespace Oro\Bundle\GridFSConfigBundle\Tests\Unit\DependencyInjection;
 
 use Knp\Bundle\GaufretteBundle\DependencyInjection\KnpGaufretteExtension;
 use Oro\Bundle\GridFSConfigBundle\DependencyInjection\OroGridFSConfigExtension;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class OroGridFSConfigExtensionTest extends \PHPUnit\Framework\TestCase
+class OroGridFSConfigExtensionTest extends TestCase
 {
     public function testLoad(): void
     {
