@@ -8,14 +8,17 @@ use MongoDB\BSON\Regex;
 use Oro\Bundle\AttachmentBundle\Command\CleanupAttachmentFilesCommand;
 use Oro\Bundle\GaufretteBundle\FileManager;
 use Oro\Bundle\GridFSConfigBundle\Adapter\GridFS;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
  * The command to delete lost attachment files when the attachments are stored in GridFS.
  */
+#[AsCommand(
+    name: 'oro:attachment:cleanup-gridfs-files',
+    description: 'Deletes lost attachment files stored in GridFS.'
+)]
 class GridFSCleanupAttachmentFilesCommand extends CleanupAttachmentFilesCommand
 {
-    protected static $defaultName = 'oro:attachment:cleanup-gridfs-files';
-
     private FilesystemMapInterface $filesystemMap;
     private string $filesystemName;
 
@@ -51,7 +54,6 @@ class GridFSCleanupAttachmentFilesCommand extends CleanupAttachmentFilesCommand
     protected function configure(): void
     {
         parent::configure();
-        $this->setDescription('Deletes lost attachment files stored in GridFS.');
     }
 
     #[\Override]
