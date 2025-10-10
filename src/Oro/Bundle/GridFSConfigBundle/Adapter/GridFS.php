@@ -3,7 +3,9 @@
 namespace Oro\Bundle\GridFSConfigBundle\Adapter;
 
 use Gaufrette\Adapter\GridFS as BaseGridFS;
+use Gaufrette\Adapter\StreamFactory;
 use Oro\Bundle\GridFSConfigBundle\GridFS\Bucket;
+use Oro\Bundle\GridFSConfigBundle\GridFS\GridFsStream;
 
 /**
  * Gaufrette adapter for the GridFS filesystem on MongoDB database.
@@ -13,7 +15,7 @@ use Oro\Bundle\GridFSConfigBundle\GridFS\Bucket;
  * Removed "metadata" on write, added "contentType", removed begining "/":
  * required for nginx gridFs module for send content properly.
  */
-class GridFS extends BaseGridFS
+class GridFS extends BaseGridFS implements StreamFactory
 {
     /** @var Bucket */
     private $bucket;
@@ -95,5 +97,10 @@ class GridFS extends BaseGridFS
     private function formatKey(string $key): string
     {
         return ltrim($key, '/');
+    }
+
+    public function createStream($key)
+    {
+        return new GridFsStream($this->bucket, $this->formatKey($key));
     }
 }
