@@ -353,7 +353,7 @@ class CollectionWrapper
         return null === $this->filesCollection->findOne(
             [],
             [
-                'readPreference' => new ReadPreference(ReadPreference::RP_PRIMARY),
+                'readPreference' => new ReadPreference(ReadPreference::PRIMARY),
                 'projection'     => ['_id' => 1],
                 'typeMap'        => [],
             ]
