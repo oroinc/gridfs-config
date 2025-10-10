@@ -1,7 +1,7 @@
 services:
   oro_gridfs.adapter.gridfs:
     parent: knp_gaufrette.adapter.gridfs
-    class: Oro\Bundle\GridFSConfigBundle\Adapter\GridFS
+    class: Oro\Bundle\GridFSConfigBundle\Adapter\GridFsStreamFactory
     abstract: true
 
   oro.mongodb.driver.config:
