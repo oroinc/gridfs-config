@@ -4,40 +4,37 @@ namespace Oro\Bundle\GridFSConfigBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\GridFSConfigBundle\Provider\MongoDbDriverConfig;
 use Oro\Bundle\GridFSConfigBundle\Provider\MongoDbRequirementsProvider;
+use Oro\Component\Testing\TempDirExtension;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Requirements\RequirementCollection;
 
 class MongoDbRequirementsProviderTest extends TestCase
 {
+    use TempDirExtension;
+
     private string $mediaDirectory;
+    private string $tempDir;
+    private MongoDbDriverConfig|MockObject $mongoDbDriverConfig;
     private MongoDbRequirementsProvider $provider;
 
     #[\Override]
     protected function setUp(): void
     {
-        $projectDirectory = sys_get_temp_dir();
+        $projectDirectory = $this->getTempDir('mongo_db_requirements_provider');
         $this->mediaDirectory = '/public/media';
 
         $this->mongoDbDriverConfig = $this->createMock(MongoDbDriverConfig::class);
-        $logger = $this->createMock(LoggerInterface::class);
 
         $this->provider = new MongoDbRequirementsProvider(
             $projectDirectory,
             $this->mongoDbDriverConfig,
-            $logger
+            $this->createMock(LoggerInterface::class)
         );
 
-        $this->tempDir = sys_get_temp_dir() . $this->mediaDirectory;
+        $this->tempDir = $projectDirectory . $this->mediaDirectory;
         mkdir($this->tempDir, 0777, true);
-    }
-
-    #[\Override]
-    protected function tearDown(): void
-    {
-        chmod($this->tempDir, 0777);
-        rmdir($this->tempDir);
-        rmdir(sys_get_temp_dir() . '/public');
     }
 
     public function testGetOroRequirementsPositive(): void
