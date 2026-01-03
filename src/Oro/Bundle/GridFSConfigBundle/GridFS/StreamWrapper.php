@@ -63,12 +63,12 @@ class StreamWrapper
      *
      * @see http://php.net/manual/en/streamwrapper.stream-close.php
      */
-    //@codingStandardsIgnoreStart
+    //phpcs:disable
     public function stream_close()
     {
         $this->stream->close();
     }
-    //@codingStandardsIgnoreEnd
+    //phpcs:enable
 
     /**
      * Returns whether the file pointer is at the end of the stream.
@@ -76,7 +76,7 @@ class StreamWrapper
      * @see http://php.net/manual/en/streamwrapper.stream-eof.php
      * @return boolean
      */
-    //@codingStandardsIgnoreStart
+    //phpcs:disable
     public function stream_eof()
     {
         if (!$this->stream instanceof ReadableStream) {
@@ -85,7 +85,7 @@ class StreamWrapper
 
         return $this->stream->isEOF();
     }
-    //@codingStandardsIgnoreEnd
+    //phpcs:enable
 
     /**
      * Opens the stream.
@@ -99,7 +99,7 @@ class StreamWrapper
      *
      * @return boolean
      */
-    //@codingStandardsIgnoreStart
+    //phpcs:disable
     public function stream_open($path, $mode, $options, &$openedPath)
     {
         $this->initProtocol($path);
@@ -115,7 +115,7 @@ class StreamWrapper
 
         return false;
     }
-    //@codingStandardsIgnoreEnd
+    //phpcs:enable
 
     /**
      * Read bytes from the stream.
@@ -129,7 +129,7 @@ class StreamWrapper
      *
      * @return string
      */
-    //@codingStandardsIgnoreStart
+    //phpcs:disable
     public function stream_read($length)
     {
         if (!$this->stream instanceof ReadableStream) {
@@ -144,7 +144,7 @@ class StreamWrapper
             return false;
         }
     }
-    //@codingStandardsIgnoreEnd
+    //phpcs:enable
 
     /**
      * Return the current position of the stream.
@@ -156,7 +156,7 @@ class StreamWrapper
      *
      * @return boolean True if the position was updated and false otherwise
      */
-    //@codingStandardsIgnoreStart
+    //phpcs:disable
     public function stream_seek($offset, $whence = SEEK_SET)
     {
         $size = $this->stream->getSize();
@@ -182,7 +182,7 @@ class StreamWrapper
 
         return true;
     }
-    //@codingStandardsIgnoreEnd
+    //phpcs:enable
 
     /**
      * Return information about the stream.
@@ -190,7 +190,7 @@ class StreamWrapper
      * @see http://php.net/manual/en/streamwrapper.stream-stat.php
      * @return array
      */
-    //@codingStandardsIgnoreStart
+    //phpcs:disable
     public function stream_stat()
     {
         $stat = $this->getStatTemplate();
@@ -214,7 +214,7 @@ class StreamWrapper
 
         return $stat;
     }
-    //@codingStandardsIgnoreEnd
+    //phpcs:enable
 
     /**
      * Return the current position of the stream.
@@ -222,12 +222,12 @@ class StreamWrapper
      * @see http://php.net/manual/en/streamwrapper.stream-tell.php
      * @return integer The current position of the stream
      */
-    //@codingStandardsIgnoreStart
+    //phpcs:disable
     public function stream_tell()
     {
         return $this->stream->tell();
     }
-    //@codingStandardsIgnoreEnd
+    //phpcs:enable
 
     /**
      * Write bytes to the stream.
@@ -238,7 +238,7 @@ class StreamWrapper
      *
      * @return integer The number of bytes written
      */
-    //@codingStandardsIgnoreStart
+    //phpcs:disable
     public function stream_write($data)
     {
         if (!$this->stream instanceof WritableStream) {
@@ -253,7 +253,7 @@ class StreamWrapper
             return false;
         }
     }
-    //@codingStandardsIgnoreEnd
+    //phpcs:enable
 
     /**
      * Returns a stat template with default values.
