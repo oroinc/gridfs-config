@@ -32,8 +32,10 @@ class GridFsStream implements Stream
         $this->fileInfo = $this->getFileInfo();
         $exists = $this->exists();
 
-        if (($exists && !$mode->allowsExistingFileOpening())
-            || (!$exists && !$mode->allowsNewFileOpening())) {
+        if (
+            ($exists && !$mode->allowsExistingFileOpening())
+            || (!$exists && !$mode->allowsNewFileOpening())
+        ) {
             return false;
         }
 

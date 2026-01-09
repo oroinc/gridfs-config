@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * phpcs:ignoreFile
  * This file is a copy of {@see MongoDB\GridFS\WritableStream}
  *
  * (c) Copyright 2016-2017 MongoDB, Inc.

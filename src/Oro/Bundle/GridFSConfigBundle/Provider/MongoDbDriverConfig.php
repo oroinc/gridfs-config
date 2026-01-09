@@ -41,7 +41,7 @@ class MongoDbDriverConfig
         try {
             $client = new Client($mongoDbConfig);
             $client->selectDatabase($mongoDbName)->command(['ping' => 1]);
-        } catch (InvalidArgumentException|RuntimeException $e) {
+        } catch (InvalidArgumentException | RuntimeException $e) {
             if ($logger) {
                 $logger->warning(
                     sprintf('MongoDB ping failed.'),
