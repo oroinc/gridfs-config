@@ -10,6 +10,7 @@ namespace Oro\Bundle\GridFSConfigBundle\GridFS;
 
 use MongoDB\Collection;
 use MongoDB\Driver\Cursor;
+use MongoDB\Driver\CursorInterface;
 use MongoDB\Driver\Exception\RuntimeException as DriverRuntimeException;
 use MongoDB\Driver\Manager;
 use MongoDB\Driver\ReadConcern;
@@ -208,7 +209,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @return array
      */
     #[\Override]
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         return [
             'bucketName'     => $this->bucketName,
@@ -234,7 +235,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @throws DriverRuntimeException for other driver errors (e.g. connection errors)
      */
     #[\Override]
-    public function delete($id)
+    public function delete($id): void
     {
         $file = $this->collectionWrapper->findFileById($id);
         $this->collectionWrapper->deleteFileAndChunksById($id);
@@ -255,7 +256,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @throws DriverRuntimeException for other driver errors (e.g. connection errors)
      */
     #[\Override]
-    public function downloadToStream($id, $destination)
+    public function downloadToStream($id, $destination): void
     {
         if (!is_resource($destination) || get_resource_type($destination) != "stream") {
             throw InvalidArgumentException::invalidType('$destination', $destination, 'resource');
@@ -292,7 +293,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @throws DriverRuntimeException for other driver errors (e.g. connection errors)
      */
     #[\Override]
-    public function downloadToStreamByName($filename, $destination, array $options = [])
+    public function downloadToStreamByName($filename, $destination, array $options = []): void
     {
         if (!is_resource($destination) || get_resource_type($destination) != "stream") {
             throw InvalidArgumentException::invalidType('$destination', $destination, 'resource');
@@ -308,7 +309,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @throws DriverRuntimeException for other driver errors (e.g. connection errors)
      */
     #[\Override]
-    public function drop()
+    public function drop(): void
     {
         $this->collectionWrapper->dropCollections();
     }
@@ -327,7 +328,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @see Find::__construct() for supported options
      */
     #[\Override]
-    public function find($filter = [], array $options = [])
+    public function find($filter = [], array $options = []): CursorInterface
     {
         return $this->collectionWrapper->findFiles($filter, $options);
     }
@@ -346,7 +347,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @see FindOne::__construct() for supported options
      */
     #[\Override]
-    public function findOne($filter = [], array $options = [])
+    public function findOne($filter = [], array $options = []): array|object|null
     {
         return $this->collectionWrapper->findOneFile($filter, $options);
     }
@@ -357,7 +358,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @return string
      */
     #[\Override]
-    public function getBucketName()
+    public function getBucketName(): string
     {
         return $this->bucketName;
     }
@@ -368,7 +369,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @return Collection
      */
     #[\Override]
-    public function getChunksCollection()
+    public function getChunksCollection(): Collection
     {
         return $this->collectionWrapper->getChunksCollection();
     }
@@ -379,7 +380,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @return integer
      */
     #[\Override]
-    public function getChunkSizeBytes()
+    public function getChunkSizeBytes(): int
     {
         return $this->chunkSizeBytes;
     }
@@ -390,7 +391,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @return string
      */
     #[\Override]
-    public function getDatabaseName()
+    public function getDatabaseName(): string
     {
         return $this->databaseName;
     }
@@ -405,7 +406,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @throws DriverRuntimeException for other driver errors (e.g. connection errors)
      */
     #[\Override]
-    public function getFileDocumentForStream($stream)
+    public function getFileDocumentForStream($stream): array|object
     {
         $file = $this->getRawFileDocumentForStream($stream);
 
@@ -424,7 +425,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @throws DriverRuntimeException for other driver errors (e.g. connection errors)
      */
     #[\Override]
-    public function getFileIdForStream($stream)
+    public function getFileIdForStream($stream): mixed
     {
         $file = $this->getRawFileDocumentForStream($stream);
 
@@ -447,7 +448,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @return Collection
      */
     #[\Override]
-    public function getFilesCollection()
+    public function getFilesCollection(): Collection
     {
         return $this->collectionWrapper->getFilesCollection();
     }
@@ -459,7 +460,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @return ReadConcern
      */
     #[\Override]
-    public function getReadConcern()
+    public function getReadConcern(): ReadConcern
     {
         return $this->readConcern;
     }
@@ -470,7 +471,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @return ReadPreference
      */
     #[\Override]
-    public function getReadPreference()
+    public function getReadPreference(): ReadPreference
     {
         return $this->readPreference;
     }
@@ -481,7 +482,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @return array
      */
     #[\Override]
-    public function getTypeMap()
+    public function getTypeMap(): array
     {
         return $this->typeMap;
     }
@@ -493,7 +494,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @return WriteConcern
      */
     #[\Override]
-    public function getWriteConcern()
+    public function getWriteConcern(): WriteConcern
     {
         return $this->writeConcern;
     }
@@ -613,7 +614,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @throws DriverRuntimeException for other driver errors (e.g. connection errors)
      */
     #[\Override]
-    public function rename($id, $newFilename)
+    public function rename($id, $newFilename): void
     {
         $updateResult = $this->collectionWrapper->updateFilenameForId($id, $newFilename);
 
@@ -660,7 +661,7 @@ class Bucket extends \MongoDB\GridFS\Bucket
      * @throws DriverRuntimeException for other driver errors (e.g. connection errors)
      */
     #[\Override]
-    public function uploadFromStream($filename, $source, array $options = [])
+    public function uploadFromStream($filename, $source, array $options = []): mixed
     {
         if (!is_resource($source) || get_resource_type($source) != "stream") {
             throw InvalidArgumentException::invalidType('$source', $source, 'resource');
