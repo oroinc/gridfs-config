@@ -252,7 +252,7 @@ class GridFsStreamTest extends TestCase
             ['test.txt', 'text/plain'],
             ['test.webp', 'image/webp'],
             ['test.xml', 'application/xml'],
-            ['test.mp4', 'video/mp4'],
+            ['test.mp4', 'application/mp4'],
         ];
     }
 
