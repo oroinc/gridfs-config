@@ -17,7 +17,7 @@
     },
     "require": {
         "oro/platform": "6.1.*",
-        "mongodb/mongodb": "1.15.*",
+        "mongodb/mongodb": "^1.21.4",
         "knplabs/knp-gaufrette-bundle": "~0.8.0"
     },
     "require-dev": {
